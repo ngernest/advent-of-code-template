@@ -55,17 +55,21 @@ data Days
 data Options = Options Days Verbosity
 
 dayParser :: Parser Days
-dayParser = (OneDay <$> day <*> input) <|> allDays
+dayParser = OneDay <$> day <*> input <|> allDays
   where
     day =
       option auto $
-        long "day" <> short 'd' <> metavar "DAY"
+        long "day"
+          <> short 'd'
+          <> metavar "DAY"
           <> help "Present the solutions for one day."
 
     input =
       optional $
         strOption $
-          long "input" <> short 'i' <> metavar "FILE"
+          long "input"
+            <> short 'i'
+            <> metavar "FILE"
             <> help "The file to read the selected day's input from."
 
     allDays =
@@ -84,8 +88,10 @@ optionsParser = Options <$> dayParser <*> verbosityParser
     verbosityParser :: Parser Verbosity
     verbosityParser =
       C.option Quiet $
-        ( flag' Verbose $
-            long "verbose" <> short 'v'
+        flag'
+          Verbose
+          ( long "verbose"
+              <> short 'v'
               <> help
                 ( unwords
                     [ "Whether to print out extra info, such as the",
@@ -94,14 +100,16 @@ optionsParser = Options <$> dayParser <*> verbosityParser
                       "Also enables timing of solutions."
                     ]
                 )
-        )
-          <|> ( flag' Timings $
-                  long "timings" <> short 't'
-                    <> help
-                      ( unwords
-                          ["Whether to enable timing of the solutions."]
-                      )
-              )
+          )
+          <|> flag'
+            Timings
+            ( long "timings"
+                <> short 't'
+                <> help
+                  ( unwords
+                      ["Whether to enable timing of the solutions."]
+                  )
+            )
 
 days :: Map Int (Day, String)
 days =
