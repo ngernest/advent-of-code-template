@@ -20,8 +20,14 @@ runDay :: R.Day
 runDay = R.runDay inputParser partA partB
 
 ------------ PARSER ------------
-inputParser :: Parser Input
-inputParser = error "Not implemented yet!"
+
+-- | Parses one single horizontal space character (' ' or '\t')
+singleSpaceP :: Parser ()
+singleSpaceP = skip isHorizontalSpace
+
+-- | Parses each line as its own list of ints
+inputParser :: Parser [[Int]]
+inputParser = sepBy1 (sepBy1 decimal singleSpaceP) endOfLine <* endOfInput
 
 ------------ TYPES ------------
 type Input = Void
@@ -31,9 +37,9 @@ type OutputA = Void
 type OutputB = Void
 
 ------------ PART A ------------
-partA :: Input -> OutputA
+partA :: [[Int]] -> OutputA
 partA = error "Not implemented yet!"
 
 ------------ PART B ------------
-partB :: Input -> OutputB
+partB :: [[Int]] -> OutputB
 partB = error "Not implemented yet!"
