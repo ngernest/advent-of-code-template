@@ -1,3 +1,6 @@
+{-# OPTIONS_GHC -Wno-unrecognised-pragmas #-}
+
+{-# HLINT ignore "Eta reduce" #-}
 module Days.Day02 (runDay) where
 
 {- ORMOLU_DISABLE -}
@@ -37,8 +40,26 @@ type OutputA = Void
 type OutputB = Void
 
 ------------ PART A ------------
-partA :: [[Int]] -> OutputA
-partA = error "Not implemented yet!"
+
+diffIsOk :: Int -> Bool
+diffIsOk d = absD >= 1 && absD <= 3
+  where
+    absD = abs d
+
+isSafe :: [Int] -> Bool
+isSafe xs = foldr (\d acc -> diffIsOk d && acc) True diffs && correctSign diffs
+  where
+    diffs = mkDiffs xs
+
+    correctSign :: [Int] -> Bool
+    correctSign diffs = all (< 0) diffs || all (> 0) diffs
+
+-- | Computes the difference between successive elements in a list
+mkDiffs :: [Int] -> [Int]
+mkDiffs xs = zipWith (-) (tail xs) xs
+
+partA :: [[Int]] -> Int
+partA rows = length (filter isSafe rows)
 
 ------------ PART B ------------
 partB :: [[Int]] -> OutputB
