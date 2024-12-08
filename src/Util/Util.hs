@@ -45,6 +45,7 @@ chunksByPredicate :: (a -> Bool) -> [a] -> [[a]]
 chunksByPredicate p ls
   | null ls = []
   | otherwise =
+      -- Find the longest prefix satisfying `p`, along with the `rest` of the list
       let (prefix, rest) = span p ls
        in if null prefix
             then chunksByPredicate p $ dropWhile (not . p) rest
